@@ -45,6 +45,9 @@
 
 /* USER CODE BEGIN PV */
 unsigned char __attribute__((section(".myBufSectionRam"))) buf_ram[128];
+const unsigned char __attribute__((section(".myBufSectionFLASH"))) buf_flash[10] = {
+		0,1,2,3,4,5,6,7,8,9
+};
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/

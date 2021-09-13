@@ -70,6 +70,14 @@ SECTIONS
   	KEEP(*(.myBufSectionRAM)) /* keep my variable even if not referenced */
   } > RAM
   
+  /* Example 2
+     this will place my named section at given address */
+  .myBufBlockFLASH 0x8001000 :
+  {
+   KEEP(*(.myBufSectionFLASH))
+  } >FLASH
+  
+  
   /* The program code and other data into "FLASH" Rom type memory */
   .text :
   {
