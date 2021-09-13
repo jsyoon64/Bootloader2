@@ -44,7 +44,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+unsigned char __attribute__((section(".myBufSectionRam"))) buf_ram[128];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/

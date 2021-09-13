@@ -60,6 +60,16 @@ SECTIONS
     . = ALIGN(4);
   } >FLASH
 
+/* Example 1
+   this will place my named section at given address
+   
+   Here: (NOLOAD)는 flash에 초기화 code를 만들지 않는다. 
+   */
+  .myBufBlockRAM 0x20000100 (NOLOAD):
+  {
+  	KEEP(*(.myBufSectionRAM)) /* keep my variable even if not referenced */
+  } > RAM
+  
   /* The program code and other data into "FLASH" Rom type memory */
   .text :
   {
