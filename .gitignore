@@ -1,0 +1,7 @@
+*.dep
+*.log
+Debug/
+Release/
+RemoteSystemsTempFiles/
+.metadata/
+.vscode/
