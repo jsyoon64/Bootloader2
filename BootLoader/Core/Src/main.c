@@ -24,16 +24,17 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include <stdio.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-
+typedef void (*pFunction)(void);
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define FLASH_APP_ADDR 0x8008000
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -44,38 +45,52 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-unsigned char __attribute__((section(".myBufSectionRAM"))) buf_ram[128];
-const unsigned char __attribute__((section(".myBufSectionFLASH"))) buf_flash[10] = {
-		0,1,2,3,4,5,6,7,8,9
-};
 
-#define LOCATE_FUNC __attribute__((section(".mysection")))
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
-
+void go2APP(void);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-void LOCATE_FUNC Blink(uint32_t dlyticks)
+void go2APP(void)
 {
-	HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
-	HAL_Delay(dlyticks);
-}
+	uint32_t JumpAddress;
+	pFunction Jump_To_Application;
+	printf("BOOTLOADER Start \r\n");
 
-void __attribute__((__section__(".RamFunc"))) TurnOnLED(GPIO_PinState PinState)
-{
-	if (PinState != GPIO_PIN_RESET)
+	// check MSP Value
+	if((( *(__IO uint32_t *)FLASH_APP_ADDR) & 0x2FFE0000) == 0x20000000)
 	{
-		LD2_GPIO_Port->BSRR = (uint32_t)LD2_Pin;
+		printf("APP Start.....\r\n");
+		HAL_Delay(100);
+
+		// Jump to Application
+		JumpAddress = *(__IO uint32_t *)(FLASH_APP_ADDR + 4);
+		Jump_To_Application = (pFunction)JumpAddress;
+
+		// Initialize user application's Stack Pointer
+		__set_MSP(*(__IO uint32_t*)FLASH_APP_ADDR );
+		Jump_To_Application();
 	}
 	else
 	{
-		LD2_GPIO_Port->BRR = (uint32_t)LD2_Pin;
+		printf("No APP found!!!\r\n");
 	}
+}
+
+int _write(int file, char *ptr, int len)
+{
+	int DataIdx;
+
+	for(DataIdx=0; DataIdx<len; DataIdx++)
+	{
+		HAL_UART_Transmit(&huart2, (uint8_t *)ptr++,1,100);
+	}
+	return len;
 }
 /* USER CODE END 0 */
 
@@ -109,7 +124,7 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-
+  printf("IAP Demo Boot\r\n");
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -117,8 +132,7 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-	  //Blink(1000);
-	  TurnOnLED(GPIO_PIN_SET);
+	  go2APP();
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
