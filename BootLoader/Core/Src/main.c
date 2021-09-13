@@ -39,13 +39,18 @@ typedef void (*pFunction)(void);
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-
+struct BootloaderSharedAPI
+{
+	void(*Blink)(uint32_t dlyticks);
+	void(*TurnOn)(void);
+	void(*TurnOff)(void);
+};
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+#define SHARED_API_SECTION __attribute__((section(".apishared_section")))
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -81,6 +86,28 @@ void go2APP(void)
 		printf("No APP found!!!\r\n");
 	}
 }
+
+void SHARED_API_SECTION Blink(uint32_t dlyticks)
+{
+	HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
+	HAL_Delay(dlyticks);
+}
+
+void SHARED_API_SECTION TurnOn(void)
+{
+	HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_SET);
+}
+
+void SHARED_API_SECTION TurnOff(void)
+{
+	HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
+}
+
+struct BootloaderSharedAPI api __attribute__((section(".API_SHARED"))) = {
+		Blink,
+		TurnOn,
+		TurnOff
+};
 
 int _write(int file, char *ptr, int len)
 {

@@ -39,7 +39,12 @@ typedef void (*pFunction)(void);
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-
+struct BootloaderAPI
+{
+	void (*Blink)(uint32_t dlyticks);
+	void(*TurnOn)(void);
+	void(*TurnOff)(void);
+};
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -74,7 +79,7 @@ int _write(int file, char *ptr, int len)
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
+  struct BootloaderAPI *api = (struct BootloaderAPI *) 0x8004000;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -97,6 +102,7 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
+  int count = 0;
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -105,7 +111,16 @@ int main(void)
   {
     /* USER CODE END WHILE */
 	printf("Application running...\r\n");
+
+	for(int i=0;i<10;i++)
+	{
+		api->Blink(200);
+	}
+	api->TurnOff();
+	HAL_Delay(500);
+	api->TurnOn();
 	HAL_Delay(1000);
+	printf("%d interactions\r\n",count++);
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
