@@ -44,10 +44,12 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-unsigned char __attribute__((section(".myBufSectionRam"))) buf_ram[128];
+unsigned char __attribute__((section(".myBufSectionRAM"))) buf_ram[128];
 const unsigned char __attribute__((section(".myBufSectionFLASH"))) buf_flash[10] = {
 		0,1,2,3,4,5,6,7,8,9
 };
+
+#define LOCATE_FUNC __attribute__((section(".mysection")))
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -58,7 +60,23 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+void LOCATE_FUNC Blink(uint32_t dlyticks)
+{
+	HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
+	HAL_Delay(dlyticks);
+}
 
+void __attribute__((__section__(".RamFunc"))) TurnOnLED(GPIO_PinState PinState)
+{
+	if (PinState != GPIO_PIN_RESET)
+	{
+		LD2_GPIO_Port->BSRR = (uint32_t)LD2_Pin;
+	}
+	else
+	{
+		LD2_GPIO_Port->BRR = (uint32_t)LD2_Pin;
+	}
+}
 /* USER CODE END 0 */
 
 /**
@@ -99,7 +117,8 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
+	  //Blink(1000);
+	  TurnOnLED(GPIO_PIN_SET);
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
