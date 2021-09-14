@@ -87,10 +87,17 @@ void go2APP(void)
 	}
 }
 
-void SHARED_API_SECTION Blink(uint32_t dlyticks)
+void Blink1(uint32_t dlyticks)
 {
 	HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
 	HAL_Delay(dlyticks);
+}
+
+void SHARED_API_SECTION Blink(uint32_t dlyticks)
+{
+	//HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
+	//HAL_Delay(dlyticks);
+	Blink1(dlyticks);
 }
 
 void SHARED_API_SECTION TurnOn(void)
