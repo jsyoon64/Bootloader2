@@ -29,12 +29,10 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-typedef void (*pFunction)(void);
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define FLASH_APP_ADDR 0x8008000
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
