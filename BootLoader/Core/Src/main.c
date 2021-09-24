@@ -42,7 +42,7 @@ typedef void (*pFunction)(void);
 struct BootloaderSharedAPI
 {
 	void(*Blink)(uint32_t dlyticks);
-	void(*TurnOn)(void);
+	unsigned int (*TurnOn)(void);
 	void(*TurnOff)(void);
 };
 /* USER CODE END PM */
@@ -51,6 +51,10 @@ struct BootloaderSharedAPI
 
 /* USER CODE BEGIN PV */
 #define SHARED_API_SECTION __attribute__((section(".apishared_section")))
+
+#define SHARED_BOOT_RAM __attribute__((section(".shared_ram")))
+unsigned char SHARED_BOOT_RAM littlefs[128];
+unsigned int SHARED_BOOT_RAM count;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -102,9 +106,11 @@ void SHARED_API_SECTION Blink(uint32_t dlyticks)
     Blink1(dlyticks);
 }
 
-void SHARED_API_SECTION TurnOn(void)
+unsigned int SHARED_API_SECTION TurnOn(void)
 {
     HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_SET);
+    littlefs[count] = count;
+    return count++;
 }
 
 void SHARED_API_SECTION TurnOff(void)
@@ -158,6 +164,7 @@ int main(void)
     }
     HAL_Delay(100);
   }
+  count = 0;
   /* USER CODE END 2 */
 
   /* Infinite loop */

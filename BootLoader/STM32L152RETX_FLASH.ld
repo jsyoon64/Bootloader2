@@ -45,7 +45,9 @@ _Min_Stack_Size = 0x400 ; /* required amount of stack */
 /* Memories definition */
 MEMORY
 {
-  RAM    (xrw)    : ORIGIN = 0x20000000,   LENGTH = 80K
+  /*RAM    (xrw)    : ORIGIN = 0x20000000,   LENGTH = 80K*/
+  RAM        (xrw): ORIGIN = 0x20000000,  LENGTH = 78K
+  SHARED_RAM (xrw): ORIGIN = 0x20013800,  LENGTH = 2K     
   FLASH    (rx)   : ORIGIN = 0x8000000,   LENGTH = 16K 
   SHARED_MEM (rx) : ORIGIN = 0x8004000,   LENGTH = 16K 
   /* 32K 후에 즉 0x8008000에 application이 존재 한다. 
@@ -74,13 +76,22 @@ SECTIONS
   {
 	  . = ALIGN(4);
 	  __sharedsection_start__ = .;
-	  *(.mysection*)
+	  *(.apishared_section*)
 	  __sharedsection_end__ = .;
 	} > SHARED_MEM
-	
 	/*check if MY_MEMORY usage exceeds MY_MEMORY size */
 	ASSERT(LENGTH(SHARED_MEM) >= (__sharedsection_end__ - __sharedsection_start__), "SHARED_MEM memory overflowed !")
-	  
+
+ .shared_ram (NOLOAD):
+  {
+    . = ALIGN(4);
+    __shared_ram_start__ = .;
+    KEEP (*(.shared_ram*))
+    __shared_ram_end__ = .;
+  } > SHARED_RAM
+  /*check if SHARED_RAM usage exceeds SHARED_RAM size */
+  ASSERT(LENGTH(SHARED_RAM) >= (__shared_ram_end__ - __shared_ram_start__), "SHARED_RAM overflowed !")
+
   /* The program code and other data into "FLASH" Rom type memory */
   .text :
   {
