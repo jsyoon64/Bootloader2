@@ -46,8 +46,8 @@ _Min_Stack_Size = 0x400 ; /* required amount of stack */
 MEMORY
 {
   RAM    (xrw)    : ORIGIN = 0x20000000,   LENGTH = 80K
-  FLASH    (rx)   : ORIGIN = 0x8000000,   LENGTH = 16K 
-  SHARED_MEM (rx) : ORIGIN = 0x8004000,   LENGTH = 16K 
+  FLASH    (rx)   : ORIGIN = 0x8000000,   LENGTH = 28K 
+  SHARED_MEM (rx) : ORIGIN = 0x8007000,   LENGTH = 4K 
   /* 32K 후에 즉 0x8008000에 application이 존재 한다. 
   FLASH_APP (rx)  : ORIGIN = 0x8008000,   LENGTH = 32K */ 
 }
@@ -64,7 +64,7 @@ SECTIONS
   } >FLASH
 
 
-  .API_SHARED 0x8004000 :
+  .API_SHARED 0x8007000 :
   {
   	KEEP(*(.API_SHARED))
 	KEEP(*(.text.add))

@@ -77,7 +77,7 @@ int _write(int file, char *ptr, int len)
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-  struct BootloaderAPI *api = (struct BootloaderAPI *) 0x8004000;
+  struct BootloaderAPI *api = (struct BootloaderAPI *) 0x8007000;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -113,6 +113,7 @@ int main(void)
 	for(int i=0;i<10;i++)
 	{
 		api->Blink(200);
+		HAL_Delay(200);
 	}
 	api->TurnOff();
 	HAL_Delay(500);
