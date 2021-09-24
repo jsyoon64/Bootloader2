@@ -109,6 +109,7 @@ void SHARED_API_SECTION Blink(uint32_t dlyticks)
 unsigned int SHARED_API_SECTION TurnOn(void)
 {
     HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_SET);
+    count %= 128;
     littlefs[count] = count;
     return count++;
 }
