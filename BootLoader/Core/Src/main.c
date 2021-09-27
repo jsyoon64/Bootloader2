@@ -24,7 +24,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include <stdio.h>
+#include "app_openbootloader.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -42,7 +42,7 @@ typedef void (*pFunction)(void);
 struct BootloaderSharedAPI
 {
 	void(*Blink)(uint32_t dlyticks);
-	void(*TurnOn)(void);
+	unsigned int (*TurnOn)(void);
 	void(*TurnOff)(void);
 };
 /* USER CODE END PM */
@@ -51,6 +51,10 @@ struct BootloaderSharedAPI
 
 /* USER CODE BEGIN PV */
 #define SHARED_API_SECTION __attribute__((section(".apishared_section")))
+
+#define SHARED_BOOT_RAM __attribute__((section(".shared_ram")))
+unsigned char SHARED_BOOT_RAM littlefs[128];
+unsigned int SHARED_BOOT_RAM count;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -63,69 +67,63 @@ void go2APP(void);
 /* USER CODE BEGIN 0 */
 void go2APP(void)
 {
-	uint32_t JumpAddress;
-	pFunction Jump_To_Application;
-	printf("BOOTLOADER Start \r\n");
+    uint32_t JumpAddress;
+    pFunction Jump_To_Application;
+    //printf("BOOTLOADER Start \r\n");
 
-	// check MSP Value
-	if((( *(__IO uint32_t *)FLASH_APP_ADDR) & 0x2FFE0000) == 0x20000000)
-	{
-		printf("APP Start.....\r\n");
-		HAL_Delay(100);
+    // check MSP Value
+    if((( *(__IO uint32_t *)FLASH_APP_ADDR) & 0x2FFE0000) == 0x20000000)
+    {
+        //printf("APP Start.....\r\n");
+        //HAL_Delay(100);
 
-		// Jump to Application
-		JumpAddress = *(__IO uint32_t *)(FLASH_APP_ADDR + 4);
-		Jump_To_Application = (pFunction)JumpAddress;
+        // Jump to Application
+        JumpAddress = *(__IO uint32_t *)(FLASH_APP_ADDR + 4);
+        Jump_To_Application = (pFunction)JumpAddress;
 
-		// Initialize user application's Stack Pointer
-		__set_MSP(*(__IO uint32_t*)FLASH_APP_ADDR );
-		Jump_To_Application();
-	}
-	else
-	{
-		printf("No APP found!!!\r\n");
-	}
+        // Initialize user application's Stack Pointer
+        __set_MSP(*(__IO uint32_t*)FLASH_APP_ADDR );
+        Jump_To_Application();
+    }
+    else
+    {
+        //printf("No APP found!!!\r\n");
+    }
 }
 
 void Blink1(uint32_t dlyticks)
 {
-	HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
-	HAL_Delay(dlyticks);
+    HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
+    //Application이 동작 할 경우 HAL_Delay가 동작 하지 않는다.
+    //Tick value가 update 되지 않으므로
+    //HAL_Delay(dlyticks);
 }
 
 void SHARED_API_SECTION Blink(uint32_t dlyticks)
 {
-	//HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
-	//HAL_Delay(dlyticks);
-	Blink1(dlyticks);
+    //HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
+    //HAL_Delay(dlyticks);
+    Blink1(dlyticks);
 }
 
-void SHARED_API_SECTION TurnOn(void)
+unsigned int SHARED_API_SECTION TurnOn(void)
 {
-	HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_SET);
+    count %= 128;
+    littlefs[count] = count;
+    return count++;
 }
 
 void SHARED_API_SECTION TurnOff(void)
 {
-	HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
 }
 
 struct BootloaderSharedAPI api __attribute__((section(".API_SHARED"))) = {
-		Blink,
-		TurnOn,
-		TurnOff
+        Blink,
+        TurnOn,
+        TurnOff
 };
-
-int _write(int file, char *ptr, int len)
-{
-	int DataIdx;
-
-	for(DataIdx=0; DataIdx<len; DataIdx++)
-	{
-		HAL_UART_Transmit(&huart2, (uint8_t *)ptr++,1,100);
-	}
-	return len;
-}
 /* USER CODE END 0 */
 
 /**
@@ -158,7 +156,16 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-  printf("IAP Demo Boot\r\n");
+  OpenBootloader_Init();
+  for (int i = 0; i < 10; i++)
+  {
+    if(OpenBootloader_ProtocolDetection() > 0)
+    {
+      break;
+    }
+    HAL_Delay(100);
+  }
+  count = 0;
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -166,7 +173,9 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-	  go2APP();
+    if(OpenBootloader_ProtocolDetection() == 0) {
+    	go2APP();
+    }
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */

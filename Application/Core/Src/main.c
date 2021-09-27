@@ -40,7 +40,7 @@
 struct BootloaderAPI
 {
 	void (*Blink)(uint32_t dlyticks);
-	void(*TurnOn)(void);
+	unsigned int (*TurnOn)(void);
 	void(*TurnOff)(void);
 };
 /* USER CODE END PM */
@@ -100,7 +100,7 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-  int count = 0;
+  unsigned int count;
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -113,12 +113,13 @@ int main(void)
 	for(int i=0;i<10;i++)
 	{
 		api->Blink(200);
+		HAL_Delay(200);
 	}
 	api->TurnOff();
 	HAL_Delay(500);
-	api->TurnOn();
+	count = api->TurnOn();
 	HAL_Delay(1000);
-	printf("%d interactions\r\n",count++);
+	printf("%d interactions\r\n",count);
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
