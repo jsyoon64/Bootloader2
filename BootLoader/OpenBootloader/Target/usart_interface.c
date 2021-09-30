@@ -20,8 +20,8 @@
 /* Includes ------------------------------------------------------------------*/
 #include "platform.h"
 
-#include "openbl_core.h"
-#include "USART/openbl_usart_cmd.h"
+#include "Core/openbl_core.h"
+#include "Modules/USART/openbl_usart_cmd.h"
 
 #include "usart_interface.h"
 #include "iwdg_interface.h"

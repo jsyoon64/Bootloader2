@@ -20,9 +20,9 @@
 /* Includes ------------------------------------------------------------------*/
 #include "platform.h"
 
-#include "Mem/openbl_mem.h"
+#include "Modules/Mem/openbl_mem.h"
 
-#include "app_openbootloader.h"
+#include "App/app_openbootloader.h"
 #include "common_interface.h"
 #include "optionbytes_interface.h"
 

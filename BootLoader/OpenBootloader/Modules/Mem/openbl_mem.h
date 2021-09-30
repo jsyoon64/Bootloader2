@@ -22,7 +22,7 @@
 #define OPENBL_MEM_H
 
 /* Includes ------------------------------------------------------------------*/
-#include "openbootloader_conf.h"
+#include "Target/openbootloader_conf.h"
 
 /* Exported types ------------------------------------------------------------*/
 typedef struct

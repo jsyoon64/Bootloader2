@@ -48,7 +48,7 @@ MEMORY
   /*RAM    (xrw)    : ORIGIN = 0x20000000,   LENGTH = 80K*/
   RAM        (xrw): ORIGIN = 0x20000000,  LENGTH = 78K
   SHARED_RAM (xrw): ORIGIN = 0x20013800,  LENGTH = 2K     
-  FLASH    (rx)    : ORIGIN = 0x8008000,   LENGTH = 480K 
+  FLASH    (rx)    : ORIGIN = 0x800C000,   LENGTH = 464K 
 }
 
 /* Sections */

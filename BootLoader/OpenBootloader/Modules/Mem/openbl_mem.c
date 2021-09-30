@@ -19,10 +19,10 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "openbl_mem.h"
-#include "openbl_core.h"
+#include "Core/openbl_core.h"
 
-#include "flash_interface.h"
-#include "interfaces_conf.h"
+#include "Target/flash_interface.h"
+#include "Target/interfaces_conf.h"
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/

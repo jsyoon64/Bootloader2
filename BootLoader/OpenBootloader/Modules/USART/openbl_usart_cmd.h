@@ -22,7 +22,7 @@
 #define OPENBL_USART_CMD_H
 
 /* Includes ------------------------------------------------------------------*/
-#include "openbl_core.h"
+#include "Core/openbl_core.h"
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/

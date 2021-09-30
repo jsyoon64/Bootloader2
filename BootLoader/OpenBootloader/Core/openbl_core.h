@@ -24,7 +24,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include <stdint.h>
 
-#include "openbootloader_conf.h"
+#include "Target/openbootloader_conf.h"
 
 /* Exported types ------------------------------------------------------------*/
 typedef struct

@@ -48,10 +48,10 @@ MEMORY
   /*RAM    (xrw)    : ORIGIN = 0x20000000,   LENGTH = 80K*/
   RAM        (xrw): ORIGIN = 0x20000000,  LENGTH = 78K
   SHARED_RAM (xrw): ORIGIN = 0x20013800,  LENGTH = 2K     
-  FLASH    (rx)   : ORIGIN = 0x8000000,   LENGTH = 16K 
-  SHARED_MEM (rx) : ORIGIN = 0x8004000,   LENGTH = 16K 
+  FLASH    (rx)   : ORIGIN = 0x8000000,   LENGTH = 40K 
+  SHARED_MEM (rx) : ORIGIN = 0x800A000,   LENGTH = 8K 
   /* 32K 후에 즉 0x8008000에 application이 존재 한다. 
-  FLASH_APP (rx)  : ORIGIN = 0x8008000,   LENGTH = 32K */ 
+  FLASH_APP (rx)  : ORIGIN = 0x800C000,   LENGTH = 464K */ 
 }
 
 /* Sections */
@@ -66,7 +66,7 @@ SECTIONS
   } >FLASH
 
 
-  .API_SHARED 0x8004000 :
+  .API_SHARED 0x800A000 :
   {
   	KEEP(*(.API_SHARED))
 	  KEEP(*(.text.add))

@@ -19,12 +19,13 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "spi.h"
 #include "usart.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "app_openbootloader.h"
+#include "App/app_openbootloader.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -34,7 +35,7 @@ typedef void (*pFunction)(void);
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define FLASH_APP_ADDR 0x8008000
+#define FLASH_APP_ADDR 0x800C000
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -155,6 +156,7 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USART2_UART_Init();
+  MX_SPI2_Init();
   /* USER CODE BEGIN 2 */
   OpenBootloader_Init();
   for (int i = 0; i < 10; i++)
@@ -172,10 +174,11 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	if(OpenBootloader_ProtocolDetection() == 0) {
+		go2APP();
+	}
     /* USER CODE END WHILE */
-    if(OpenBootloader_ProtocolDetection() == 0) {
-    	go2APP();
-    }
+
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
