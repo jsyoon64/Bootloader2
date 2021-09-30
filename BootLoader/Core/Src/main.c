@@ -19,6 +19,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "spi.h"
 #include "usart.h"
 #include "gpio.h"
 
@@ -94,8 +95,8 @@ void go2APP(void)
 void Blink1(uint32_t dlyticks)
 {
     HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
-    //Applicationì´ ë™ì‘ í•  ê²½ìš° HAL_Delayê°€ ë™ì‘ í•˜ì§€ ì•ŠëŠ”ë‹¤.
-    //Tick valueê°€ update ë˜ì§€ ì•Šìœ¼ë¯€ë¡œ
+    //Application?´ ?™?‘ ?•  ê²½ìš° HAL_Delayê°? ?™?‘ ?•˜ì§? ?•Š?Š”?‹¤.
+    //Tick valueê°? update ?˜ì§? ?•Š?œ¼ë¯?ë¡?
     //HAL_Delay(dlyticks);
 }
 
@@ -155,6 +156,7 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USART2_UART_Init();
+  MX_SPI2_Init();
   /* USER CODE BEGIN 2 */
   OpenBootloader_Init();
   for (int i = 0; i < 10; i++)
@@ -173,9 +175,7 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-    if(OpenBootloader_ProtocolDetection() == 0) {
-    	go2APP();
-    }
+
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */

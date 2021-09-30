@@ -87,7 +87,7 @@ static OPENBL_OpsTypeDef IWDG_Ops =
 
 /* External variables --------------------------------------------------------*/
 extern OPENBL_MemoryTypeDef FLASH_Descriptor;
-extern OPENBL_MemoryTypeDef RAM_Descriptor;
+//extern OPENBL_MemoryTypeDef RAM_Descriptor;
 extern OPENBL_MemoryTypeDef OB1_Descriptor;
 extern OPENBL_MemoryTypeDef OB2_Descriptor;
 extern OPENBL_MemoryTypeDef OTP_Descriptor;
@@ -138,7 +138,7 @@ void OpenBootloader_Init(void)
 
   /* Initialise memories */
   OPENBL_MEM_RegisterMemory(&FLASH_Descriptor);
-  OPENBL_MEM_RegisterMemory(&RAM_Descriptor);
+  //OPENBL_MEM_RegisterMemory(&RAM_Descriptor);
   OPENBL_MEM_RegisterMemory(&OB1_Descriptor);
   //OPENBL_MEM_RegisterMemory(&OB2_Descriptor);
   OPENBL_MEM_RegisterMemory(&OTP_Descriptor);

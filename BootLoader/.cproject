@@ -81,7 +81,7 @@
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Core"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="LittleFS"/>
-						<entry excluding="Modules/FDCAN|Target/iwdg_interface.c|Target/fdcan_interface.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="OpenBootloader"/>
+						<entry excluding="Target/ram_interface.c|Modules/FDCAN|Target/iwdg_interface.c|Target/fdcan_interface.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="OpenBootloader"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -157,7 +157,7 @@
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Core"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="LittleFS"/>
-						<entry excluding="Modules/FDCAN|Target/iwdg_interface.c|Target/fdcan_interface.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="OpenBootloader"/>
+						<entry excluding="Target/ram_interface.c|Modules/FDCAN|Target/iwdg_interface.c|Target/fdcan_interface.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="OpenBootloader"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

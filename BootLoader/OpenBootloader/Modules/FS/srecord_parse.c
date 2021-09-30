@@ -164,7 +164,7 @@ int16_t SrecParseLine(tSrecLineParseObject *lineObj)
   char *line = lineObj->line;
 
   /* check pointers and not that data can be a null pointer */
-  ASSERT(line != NULL);
+  //ASSERT(line != NULL);
   /* figure out what type of line we are dealing with */
   lineType = SrecGetLineType(line);
   /* make sure it is one that we can parse */

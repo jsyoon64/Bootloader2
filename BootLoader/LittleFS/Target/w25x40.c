@@ -39,8 +39,8 @@
 
 
 /* Private macro -------------------------------------------------------------*/
-#define W25X_NSS_H	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_0, GPIO_PIN_SET)
-#define W25X_NSS_L	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_0, GPIO_PIN_RESET)
+#define W25X_NSS_H	HAL_GPIO_WritePin(SPI2_CS_GPIO_Port, SPI2_CS_Pin, GPIO_PIN_SET)
+#define W25X_NSS_L	HAL_GPIO_WritePin(SPI2_CS_GPIO_Port, SPI2_CS_Pin, GPIO_PIN_RESET)
 
 #define W25XXX_PAGETOSECTOR(x) ((x * w25xxx.PageSize) / w25xxx.SectorSize)
 #define W25XXX_PAGETOBLOCK(x) ((x * w25xxx.PageSize) / w25xxx.BlockSize)
