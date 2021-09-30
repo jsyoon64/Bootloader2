@@ -77,7 +77,7 @@ int _write(int file, char *ptr, int len)
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-  struct BootloaderAPI *api = (struct BootloaderAPI *) 0x8004000;
+  struct BootloaderAPI *api = (struct BootloaderAPI *) 0x800A000;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/

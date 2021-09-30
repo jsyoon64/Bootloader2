@@ -35,7 +35,7 @@ typedef void (*pFunction)(void);
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define FLASH_APP_ADDR 0x8008000
+#define FLASH_APP_ADDR 0x800C000
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -95,8 +95,8 @@ void go2APP(void)
 void Blink1(uint32_t dlyticks)
 {
     HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
-    //Application?´ ?™?‘ ?•  ê²½ìš° HAL_Delayê°? ?™?‘ ?•˜ì§? ?•Š?Š”?‹¤.
-    //Tick valueê°? update ?˜ì§? ?•Š?œ¼ë¯?ë¡?
+    //Applicationì´ ë™ì‘ í•  ê²½ìš° HAL_Delayê°€ ë™ì‘ í•˜ì§€ ì•ŠëŠ”ë‹¤.
+    //Tick valueê°€ update ë˜ì§€ ì•Šìœ¼ë¯€ë¡œ
     //HAL_Delay(dlyticks);
 }
 
@@ -174,6 +174,9 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	if(OpenBootloader_ProtocolDetection() == 0) {
+		go2APP();
+	}
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

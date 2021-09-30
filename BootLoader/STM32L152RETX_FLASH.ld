@@ -51,7 +51,7 @@ MEMORY
   FLASH    (rx)   : ORIGIN = 0x8000000,   LENGTH = 40K 
   SHARED_MEM (rx) : ORIGIN = 0x800A000,   LENGTH = 8K 
   /* 32K 후에 즉 0x8008000에 application이 존재 한다. 
-  FLASH_APP (rx)  : ORIGIN = 0x800C000,   LENGTH = 32K */ 
+  FLASH_APP (rx)  : ORIGIN = 0x800C000,   LENGTH = 464K */ 
 }
 
 /* Sections */
