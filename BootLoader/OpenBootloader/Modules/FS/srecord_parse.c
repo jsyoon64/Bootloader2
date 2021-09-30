@@ -21,12 +21,12 @@
 /**
  * @brief     Helper function to convert a sequence of 2 characters that represent
  *            a hexadecimal value to the actual byte value.
- *              Example: FileLibHexStringToByte("2f")  --> returns 47.
+ *              Example: srecHexStringToByte("2f")  --> returns 47.
  * @param     hexstring String beginning with 2 characters that represent a hexa-
  *                      decimal value.
  * @return    The resulting byte value.
  */
-static uint8_t FileLibHexStringToByte(const char *hexstring)
+static uint8_t srecHexStringToByte(const char *hexstring)
 {
   uint8_t result = 0;
   char  c;
@@ -54,14 +54,14 @@ static uint8_t FileLibHexStringToByte(const char *hexstring)
   }
   /* return the results */
   return result;
-} /*** end of FileLibHexStringToByte ***/
+} /*** end of srecHexStringToByte ***/
 
 /**
  * @brief     Inspects a line from a Motorola S-Record file to determine its type.
  * @param     line A line from the S-Record.
  * @return    the S-Record line type.
  */
-tSrecLineType FileSrecGetLineType(const char *line)
+tSrecLineType SrecGetLineType(const char *line)
 {
   /* check if the line starts with the 'S' character, followed by a digit */
   if ((toupper((uint16_t)(line[0])) != 'S') || (isdigit((uint16_t)(line[1])) == 0))
@@ -82,8 +82,18 @@ tSrecLineType FileSrecGetLineType(const char *line)
   {
     return LINE_TYPE_S3;
   }
+  if (line[1] == '7')
+  {
+    return LINE_TYPE_S7;
+  }  
   /* still here so not a supported line type found */
   return LINE_TYPE_UNSUPPORTED;
+}
+
+uint16_t SrecGetLineLength(const char *line)
+{
+  /* read out the number of byte values that follow on the line */
+  return srecHexStringToByte(line);
 }
 
 /**
@@ -92,7 +102,7 @@ tSrecLineType FileSrecGetLineType(const char *line)
  * @param     line An S1, S2 or S3 line from the S-Record.
  * @return    TRUE if the checksum is correct, BLT_FALSE otherwise.
  */
-sRec_ProcessStatus FileSrecVerifyChecksum(const char *line)
+sRec_ProcessStatus SrecVerifyChecksum(const char *line)
 {
   uint16_t bytes_on_line;
   uint8_t  checksum = 0;
@@ -100,7 +110,7 @@ sRec_ProcessStatus FileSrecVerifyChecksum(const char *line)
   /* adjust pointer to point to byte count value */
   line += 2;
   /* read out the number of byte values that follow on the line */
-  bytes_on_line = FileLibHexStringToByte(line);
+  bytes_on_line = srecHexStringToByte(line);
   /* byte count is part of checksum */
   checksum += bytes_on_line;
   /* adjust pointer to the first byte of the address */
@@ -109,7 +119,7 @@ sRec_ProcessStatus FileSrecVerifyChecksum(const char *line)
   do
   {
     /* add the next byte value to the checksum */
-    checksum += FileLibHexStringToByte(line);
+    checksum += srecHexStringToByte(line);
     /* update counter */
     bytes_on_line--;
     /* point to next hex string in the line */
@@ -120,7 +130,7 @@ sRec_ProcessStatus FileSrecVerifyChecksum(const char *line)
    * databytes and then taking the 1-complement of the sum's least signigicant byte */
   checksum = ~checksum;
   /* finally verify the calculated checksum with the one at the end of the line */
-  if (checksum != FileLibHexStringToByte(line))
+  if (checksum != srecHexStringToByte(line))
   {
     /* checksum incorrect */
     return SREC_ERROR;
@@ -141,25 +151,30 @@ sRec_ProcessStatus FileSrecVerifyChecksum(const char *line)
  *            the line is not an S1, S2 or S3 line or ERROR_SREC_INVALID_CHECKSUM
  *            in case the checksum validation failed.
  */
-int16_t FileSrecParseLine(const char *line, uint32_t *address, uint8_t *data)
+//int16_t SrecParseLine(const char *line, uint32_t *address, uint8_t *data)
+int16_t SrecParseLine(tSrecLineParseObject *lineObj)
 {
   tSrecLineType lineType;
   int16_t   data_byte_count = 0;
   uint16_t  bytes_on_line;
   uint16_t  i;
 
+  uint32_t *address = &lineObj->address;
+  uint8_t *data = lineObj->data;
+  char *line = lineObj->line;
+
   /* check pointers and not that data can be a null pointer */
-  ASSERT((address != NULL) && (line != NULL));
+  ASSERT(line != NULL);
   /* figure out what type of line we are dealing with */
-  lineType = FileSrecGetLineType(line);
+  lineType = SrecGetLineType(line);
   /* make sure it is one that we can parse */
-  if (lineType == LINE_TYPE_UNSUPPORTED)
+  if ((lineType == LINE_TYPE_UNSUPPORTED) || (lineType == LINE_TYPE_S7))
   {
     /* not a parsing error, but simply no data on this line */
     return 0;
   }
   /* verify the checksum */
-  if (FileSrecVerifyChecksum(line) != SREC_SUCCESS)
+  if (SrecVerifyChecksum(line) != SREC_SUCCESS)
   {
     /* error on data line encountered */
     return ERROR_SREC_INVALID_CHECKSUM;
@@ -172,12 +187,12 @@ int16_t FileSrecParseLine(const char *line, uint32_t *address, uint8_t *data)
       /* adjust pointer to point to byte count value */
       line += 2;
       /* read out the number of byte values that follow on the line */
-      bytes_on_line = FileLibHexStringToByte(line);
+      bytes_on_line = srecHexStringToByte(line);
       /* read out the 16-bit address */
       line += 2;
-      *address = FileLibHexStringToByte(line) << 8;
+      *address = srecHexStringToByte(line) << 8;
       line += 2;
-      *address += FileLibHexStringToByte(line);
+      *address += srecHexStringToByte(line);
       /* adjust pointer to point to the first data byte after the address */
       line += 2;
       /* determine how many data bytes are on the line */
@@ -187,7 +202,7 @@ int16_t FileSrecParseLine(const char *line, uint32_t *address, uint8_t *data)
       {
         for (i=0; i<data_byte_count; i++)
         {
-          data[i] = FileLibHexStringToByte(line);
+          data[i] = srecHexStringToByte(line);
           line += 2;
         }
       }
@@ -198,14 +213,14 @@ int16_t FileSrecParseLine(const char *line, uint32_t *address, uint8_t *data)
       /* adjust pointer to point to byte count value */
       line += 2;
       /* read out the number of byte values that follow on the line */
-      bytes_on_line = FileLibHexStringToByte(line);
+      bytes_on_line = srecHexStringToByte(line);
       /* read out the 32-bit address */
       line += 2;
-      *address = FileLibHexStringToByte(line) << 16;
+      *address = srecHexStringToByte(line) << 16;
       line += 2;
-      *address += FileLibHexStringToByte(line) << 8;
+      *address += srecHexStringToByte(line) << 8;
       line += 2;
-      *address += FileLibHexStringToByte(line);
+      *address += srecHexStringToByte(line);
       /* adjust pointer to point to the first data byte after the address */
       line += 2;
       /* determine how many data bytes are on the line */
@@ -215,7 +230,7 @@ int16_t FileSrecParseLine(const char *line, uint32_t *address, uint8_t *data)
       {
         for (i=0; i<data_byte_count; i++)
         {
-          data[i] = FileLibHexStringToByte(line);
+          data[i] = srecHexStringToByte(line);
           line += 2;
         }
       }
@@ -226,16 +241,16 @@ int16_t FileSrecParseLine(const char *line, uint32_t *address, uint8_t *data)
       /* adjust pointer to point to byte count value */
       line += 2;
       /* read out the number of byte values that follow on the line */
-      bytes_on_line = FileLibHexStringToByte(line);
+      bytes_on_line = srecHexStringToByte(line);
       /* read out the 32-bit address */
       line += 2;
-      *address = FileLibHexStringToByte(line) << 24;
+      *address = srecHexStringToByte(line) << 24;
       line += 2;
-      *address += FileLibHexStringToByte(line) << 16;
+      *address += srecHexStringToByte(line) << 16;
       line += 2;
-      *address += FileLibHexStringToByte(line) << 8;
+      *address += srecHexStringToByte(line) << 8;
       line += 2;
-      *address += FileLibHexStringToByte(line);
+      *address += srecHexStringToByte(line);
       /* adjust pointer to point to the first data byte after the address */
       line += 2;
       /* determine how many data bytes are on the line */
@@ -245,7 +260,7 @@ int16_t FileSrecParseLine(const char *line, uint32_t *address, uint8_t *data)
       {
         for (i=0; i<data_byte_count; i++)
         {
-          data[i] = FileLibHexStringToByte(line);
+          data[i] = srecHexStringToByte(line);
           line += 2;
         }
       }
@@ -256,4 +271,4 @@ int16_t FileSrecParseLine(const char *line, uint32_t *address, uint8_t *data)
   }
 
   return data_byte_count;
-} /*** end of FileSrecParseLine ***/
+} /*** end of SrecParseLine ***/

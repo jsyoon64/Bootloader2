@@ -9,12 +9,14 @@
 /* Includes ------------------------------------------------------------------*/
 #include "platform.h"
 
-#include "openbl_core.h"
-#include "FS/openbl_fs_cmd.h"
+#include "Core/openbl_core.h"
+#include "Modules/FS/openbl_fs_cmd.h"
 
 #include "fs_interface.h"
 #include "iwdg_interface.h"
 #include "interfaces_conf.h"
+#include "Core/lfs.h"
+#include "App/app_littlefs.h"
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -34,9 +36,17 @@ uint8_t const fs_command_list[] =
     CMD_GO
 };
 
+static int isFSMounted = -1;
+lfs_file_t file;
 /* Exported variables --------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
+int openbl_FWfileOpen(void)
+{
+    int err = lfs_file_open(&lfs, &file, firmwareFilename, LFS_O_RDONLY);
+    lfs_file_close(&lfs, &file);
+    return err;
+}
 /* Exported functions --------------------------------------------------------*/
 
 /**
@@ -47,10 +57,8 @@ void OPENBL_FS_Configuration(void)
 {
   response = BUSY_BYTE;
   fs_command_list_index = 0;
-  
-  // TODO  
-  /* mount the file system, using logical disk 0 */
-  // fresult = f_mount(&fatFsObjects.fs, "0:", 0);
+
+  isFSMounted = LittleFS_init();
 }
 
 /**
@@ -59,14 +67,17 @@ void OPENBL_FS_Configuration(void)
  */
 uint8_t OPENBL_FS_ProtocolDetection(void)
 {
-  uint8_t detected;
+  static uint8_t detected = 0;
+
+  if(isFSMounted < 0) {
+    return 0;
+  }
 
   // TODO
   /* Check if the Firmware file is being 
      attempt to obtain a file object for the firmware file 
   */
-  //if (f_open(&fatFsObjects.file, FileGetFirmwareFilenameHook(), FA_OPEN_EXISTING | FA_READ) != FR_OK)
-  if (0)
+  if( (!detected) && (openbl_FWfileOpen() >=0 ))
   {
     detected = 1;
   }

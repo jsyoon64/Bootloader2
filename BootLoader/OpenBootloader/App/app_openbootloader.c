@@ -20,21 +20,21 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "app_openbootloader.h"
-#include "usart_interface.h"
-#include "fs_interface.h"
+#include "Target/usart_interface.h"
+#include "Target/fs_interface.h"
 //#include "fdcan_interface.h"
-#include "flash_interface.h"
-#include "ram_interface.h"
-#include "optionbytes_interface.h"
-#include "iwdg_interface.h"
-#include "otp_interface.h"
-#include "USART/openbl_usart_cmd.h"
-#include "FS/openbl_fs_cmd.h"
+#include "Target/flash_interface.h"
+#include "Target/ram_interface.h"
+#include "Target/optionbytes_interface.h"
+#include "Target/iwdg_interface.h"
+#include "Target/otp_interface.h"
+#include "Modules/USART/openbl_usart_cmd.h"
+#include "Modules/FS/openbl_fs_cmd.h"
 //#include "openbl_fdcan_cmd.h"
-#include "systemmemory_interface.h"
+#include "Target/systemmemory_interface.h"
 
-#include "openbl_core.h"
-#include "Mem/openbl_mem.h"
+#include "Core/openbl_core.h"
+#include "Modules/Mem/openbl_mem.h"
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/

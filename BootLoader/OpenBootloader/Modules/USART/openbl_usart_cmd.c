@@ -18,11 +18,11 @@
   */
 
 /* Includes ------------------------------------------------------------------*/
-#include "Mem/openbl_mem.h"
+#include "Modules/Mem/openbl_mem.h"
 #include "openbl_usart_cmd.h"
 
-#include "openbootloader_conf.h"
-#include "usart_interface.h"
+#include "Target/openbootloader_conf.h"
+#include "Target/usart_interface.h"
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/

@@ -27,7 +27,7 @@
 #define OPEN_BL_FS_JUMP_APP_ADDR 0x08008000
 
 /* Exported macro ------------------------------------------------------------*/
-const char *firmwareFilename;
+extern const char *firmwareFilename;
 
 /* Exported functions ------------------------------------------------------- */
 void OPENBL_FS_Configuration(void);

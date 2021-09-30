@@ -31,6 +31,7 @@ typedef enum
   LINE_TYPE_S1,                                  /**< 16-bit address line              */
   LINE_TYPE_S2,                                  /**< 24-bit address line              */
   LINE_TYPE_S3,                                  /**< 32-bit address line              */
+  LINE_TYPE_S7,                                  /**< end of file                      */
   LINE_TYPE_UNSUPPORTED                          /**< unsupported line                 */
 } tSrecLineType;
 
@@ -52,8 +53,10 @@ typedef struct
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 /* functions for reading data from a Motorola S-record file. */
-tSrecLineType FileSrecGetLineType(const char *line);
-sRec_ProcessStatus FileSrecVerifyChecksum(const char *line);
-int16_t FileSrecParseLine(const char *line, uint32_t *address, uint8_t *data);
+tSrecLineType SrecGetLineType(const char *line);
+uint16_t SrecGetLineLength(const char *line);
+sRec_ProcessStatus SrecVerifyChecksum(const char *line);
+//int16_t SrecParseLine(const char *line, uint32_t *address, uint8_t *data);
+int16_t SrecParseLine(tSrecLineParseObject *line);
 
 #endif /* SRECORD_PARSE_H */
