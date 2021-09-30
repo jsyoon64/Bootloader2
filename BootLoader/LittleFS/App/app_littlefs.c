@@ -45,7 +45,7 @@ const struct lfs_config cfg = {
     .block_size = 4096, // 4k
     // Number of erasable blocks on the device.
     .block_count = 128, // block당 16 sector  * 8 block
-    .cache_size = 16,
+    .cache_size = 256,//16,
     .lookahead_size = 16,
     .block_cycles = 500,
 
