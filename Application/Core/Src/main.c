@@ -112,6 +112,7 @@ int main(void)
 	}
 	count = api->TurnOn();
 	HAL_Delay(1000);
+	api->LittleFS_Mount();
 	printf("%d interactions\r\n",count);
     /* USER CODE BEGIN 3 */
   }
