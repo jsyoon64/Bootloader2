@@ -26,6 +26,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "App/app_openbootloader.h"
+#include "shared_mem.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -40,22 +42,11 @@ typedef void (*pFunction)(void);
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-struct BootloaderSharedAPI
-{
-	void(*Blink)(uint32_t dlyticks);
-	unsigned int (*TurnOn)(void);
-	void(*TurnOff)(void);
-};
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-#define SHARED_API_SECTION __attribute__((section(".apishared_section")))
-
-#define SHARED_BOOT_RAM __attribute__((section(".shared_ram")))
-unsigned char SHARED_BOOT_RAM littlefs[128];
-unsigned int SHARED_BOOT_RAM count;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -91,40 +82,6 @@ void go2APP(void)
         //printf("No APP found!!!\r\n");
     }
 }
-
-void Blink1(uint32_t dlyticks)
-{
-    HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
-    //Application이 동작 할 경우 HAL_Delay가 동작 하지 않는다.
-    //Tick value가 update 되지 않으므로
-    //HAL_Delay(dlyticks);
-}
-
-void SHARED_API_SECTION Blink(uint32_t dlyticks)
-{
-    //HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
-    //HAL_Delay(dlyticks);
-    Blink1(dlyticks);
-}
-
-unsigned int SHARED_API_SECTION TurnOn(void)
-{
-    HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_SET);
-    count %= 128;
-    littlefs[count] = count;
-    return count++;
-}
-
-void SHARED_API_SECTION TurnOff(void)
-{
-    HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
-}
-
-struct BootloaderSharedAPI api __attribute__((section(".API_SHARED"))) = {
-        Blink,
-        TurnOn,
-        TurnOff
-};
 /* USER CODE END 0 */
 
 /**
@@ -167,7 +124,8 @@ int main(void)
     }
     HAL_Delay(100);
   }
-  count = 0;
+
+  sharedmem_init();
   /* USER CODE END 2 */
 
   /* Infinite loop */

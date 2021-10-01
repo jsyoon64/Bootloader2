@@ -21,6 +21,7 @@
 #include "main.h"
 #include "usart.h"
 #include "gpio.h"
+#include "shared_mem_api.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -37,12 +38,6 @@
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-struct BootloaderAPI
-{
-	void (*Blink)(uint32_t dlyticks);
-	unsigned int (*TurnOn)(void);
-	void(*TurnOff)(void);
-};
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -77,7 +72,7 @@ int _write(int file, char *ptr, int len)
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-  struct BootloaderAPI *api = (struct BootloaderAPI *) 0x800A000;
+	_SharedMemAPI_ *api = (_SharedMemAPI_ *) 0x800A000;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -112,11 +107,9 @@ int main(void)
 
 	for(int i=0;i<10;i++)
 	{
-		api->Blink(200);
+		api->LedBlink();
 		HAL_Delay(200);
 	}
-	api->TurnOff();
-	HAL_Delay(500);
 	count = api->TurnOn();
 	HAL_Delay(1000);
 	printf("%d interactions\r\n",count);

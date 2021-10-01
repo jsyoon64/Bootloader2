@@ -10,6 +10,7 @@
 #include "Core/lfs.h"
 #include "app_littlefs.h"
 #include "Target/w25x40.h"
+#include "shared_mem.h"
 
 /* Private function prototypes -----------------------------------------------*/
 static int block_device_read(const struct lfs_config *c, lfs_block_t block, lfs_off_t off, void *buffer, lfs_size_t size);
@@ -25,13 +26,13 @@ uint8_t lfs_prog_buf[256];
 uint8_t lfs_lookahead_buf[16];	// 128/8=16
 uint8_t lfs_file_buf[256];
 
-// variables used by the filesystem
+// variables used by the file system
 lfs_t lfs;
 struct lfs_info dir_info;
 
 // variables for directory info
 
-// configuration of the filesystem is provided by this struct
+// configuration of the file system is provided by this struct
 const struct lfs_config cfg = {
     // block device operations
     .read  = block_device_read,
@@ -107,12 +108,38 @@ int LittleFS_init(void)
     return err;
 }
 
-int LittleFS_Format(void)
+int SHARED_API_SECTION LittleFS_Format(void)
 {
-    lfs_format(&lfs, &cfg);
+    return lfs_format(&lfs, &cfg);
 }
 
-int LittleFS_Mount(void)
+int SHARED_API_SECTION LittleFS_Mount(void)
 {
-    lfs_mount(&lfs, &cfg);
+    return lfs_mount(&lfs, &cfg);
 }
+
+int SHARED_API_SECTION LittleFS_Open(lfs_file_t *file, const char *path, int flags)
+{
+	return lfs_file_open(&lfs, file, path, flags);
+}
+
+int SHARED_API_SECTION LittleFS_Read(lfs_file_t *file, void *buffer, uint32_t size)
+{
+	return lfs_file_read(&lfs, file, buffer, size);
+}
+
+int SHARED_API_SECTION LittleFS_Write(lfs_file_t *file, const void *buffer, uint32_t size)
+{
+	return lfs_file_write(&lfs, file, buffer, size);
+}
+
+int SHARED_API_SECTION LittleFS_Close(lfs_file_t *file)
+{
+	return lfs_file_close(&lfs, file);
+}
+
+int SHARED_API_SECTION LittleFS_Seek(lfs_file_t *file, int32_t off, int whence)
+{
+	return lfs_file_seek(&lfs, file, off, whence);
+}
+
