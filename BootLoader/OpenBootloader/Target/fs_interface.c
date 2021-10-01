@@ -15,8 +15,8 @@
 #include "fs_interface.h"
 #include "iwdg_interface.h"
 #include "interfaces_conf.h"
-#include "Core/lfs.h"
-#include "App/app_littlefs.h"
+//#include "Core/lfs.h"
+#include "LittleFS/App/app_littlefs.h"
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/

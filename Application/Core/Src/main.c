@@ -21,7 +21,7 @@
 #include "main.h"
 #include "usart.h"
 #include "gpio.h"
-#include "shared_mem_api.h"
+#include "SharedMem/shared_mem_api.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -96,6 +96,7 @@ int main(void)
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
   unsigned int count;
+  printf("Application running...\r\n");
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -103,18 +104,16 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-	printf("Application running...\r\n");
-
-	for(int i=0;i<10;i++)
-	{
-		api->LedBlink();
-		HAL_Delay(200);
-	}
-	count = api->TurnOn();
-	HAL_Delay(1000);
-	api->LittleFS_Mount();
-	printf("%d interactions\r\n",count);
     /* USER CODE BEGIN 3 */
+    for(int i=0;i<10;i++)
+    {
+        api->LedBlink();
+        HAL_Delay(200);
+    }
+    count = api->TurnOn();
+    HAL_Delay(1000);
+    api->LittleFS_Mount();
+    printf("%d interactions\r\n",count);
   }
   /* USER CODE END 3 */
 }

@@ -22,8 +22,8 @@ Author          Date            Number          Description of Changes
 
 /* Scheduler include files. */
 /* Application include files. */
-#include "Core/lfs.h"
-#include "Modules/FS/srecord_parse.h"
+#include "../LittleFS/Core/lfs.h"
+#include "../Srecord/srecord_parse.h"
 
 /* Exported types ------------------------------------------------------------*/
 typedef struct BootloaderSharedAPI

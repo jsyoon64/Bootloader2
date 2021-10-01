@@ -26,7 +26,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "App/app_openbootloader.h"
-#include "shared_mem.h"
+#include "SharedMem/shared_mem.h"
 
 /* USER CODE END Includes */
 

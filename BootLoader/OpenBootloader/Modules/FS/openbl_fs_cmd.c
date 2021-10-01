@@ -13,8 +13,8 @@
 #include "Target/openbootloader_conf.h"
 #include "Target/fs_interface.h"
 #include "Target/flash_layout.h"
-#include "srecord_parse.h"
-#include "App/app_littlefs.h"
+#include "Srecord/srecord_parse.h"
+#include "LittleFS/App/app_littlefs.h"
 
 /* Private typedef -----------------------------------------------------------*/
 

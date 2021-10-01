@@ -10,8 +10,8 @@
 #define _APP_LITTLEFS_H_
 
 /* Includes ------------------------------------------------------------------*/
-#include "Core/lfs.h"
-#include "shared_mem.h"
+#include "../Core/lfs.h"
+#include "../../SharedMem/shared_mem.h"
 
 /* Exported types ------------------------------------------------------------*/
 extern lfs_t lfs;

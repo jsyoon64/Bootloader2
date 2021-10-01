@@ -20,7 +20,7 @@ Author          Date            Number          Description of Changes
 /* Application include files. */
 #include "shared_mem.h"
 #include "shared_mem_api.h"
-#include "App/app_littlefs.h"
+#include "../LittleFS/App/app_littlefs.h"
 #include "gpio.h"
 
 void SHARED_API_SECTION LedBlink(void);

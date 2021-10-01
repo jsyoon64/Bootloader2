@@ -12,7 +12,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include <stdint.h>
-#include "shared_mem.h"
+#include "../SharedMem/shared_mem.h"
 
 /* Exported types ------------------------------------------------------------*/
 /** Maximum number of characters that can be on a line in the firmware file. */

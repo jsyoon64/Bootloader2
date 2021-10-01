@@ -7,10 +7,8 @@
   */
   
 /* Includes ------------------------------------------------------------------*/
-#include "Core/lfs.h"
 #include "app_littlefs.h"
-#include "Target/w25x40.h"
-#include "shared_mem.h"
+#include "../Target/w25x40.h"
 
 /* Private function prototypes -----------------------------------------------*/
 static int block_device_read(const struct lfs_config *c, lfs_block_t block, lfs_off_t off, void *buffer, lfs_size_t size);

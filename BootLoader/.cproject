@@ -51,9 +51,7 @@
 									<listOptionValue builtIn="false" value="../Drivers/CMSIS/Device/ST/STM32L1xx/Include"/>
 									<listOptionValue builtIn="false" value="../Drivers/CMSIS/Include"/>
 									<listOptionValue builtIn="false" value="../OpenBootloader"/>
-									<listOptionValue builtIn="false" value="../LittleFS"/>
-									<listOptionValue builtIn="false" value="../LittleFS/Core"/>
-									<listOptionValue builtIn="false" value="../SharedAPI"/>
+									<listOptionValue builtIn="false" value="../../Common"/>
 								</option>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.1821096625" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c"/>
 							</tool>
@@ -80,11 +78,10 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="Common"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Core"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="LittleFS"/>
 						<entry excluding="Target/ram_interface.c|Modules/FDCAN|Target/iwdg_interface.c|Target/fdcan_interface.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="OpenBootloader"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="SharedAPI"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -159,9 +156,7 @@
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Core"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="LittleFS"/>
 						<entry excluding="Target/ram_interface.c|Modules/FDCAN|Target/iwdg_interface.c|Target/fdcan_interface.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="OpenBootloader"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="SharedAPI"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
