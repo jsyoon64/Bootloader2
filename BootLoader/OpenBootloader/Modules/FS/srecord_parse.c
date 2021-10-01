@@ -61,7 +61,7 @@ static uint8_t srecHexStringToByte(const char *hexstring)
  * @param     line A line from the S-Record.
  * @return    the S-Record line type.
  */
-tSrecLineType SrecGetLineType(const char *line)
+tSrecLineType SHARED_API_SECTION SrecGetLineType(const char *line)
 {
   /* check if the line starts with the 'S' character, followed by a digit */
   if ((toupper((uint16_t)(line[0])) != 'S') || (isdigit((uint16_t)(line[1])) == 0))
@@ -90,7 +90,7 @@ tSrecLineType SrecGetLineType(const char *line)
   return LINE_TYPE_UNSUPPORTED;
 }
 
-uint16_t SrecGetLineLength(const char *line)
+uint16_t SHARED_API_SECTION SrecGetLineLength(const char *line)
 {
   /* read out the number of byte values that follow on the line */
   return srecHexStringToByte(line);
@@ -102,7 +102,7 @@ uint16_t SrecGetLineLength(const char *line)
  * @param     line An S1, S2 or S3 line from the S-Record.
  * @return    TRUE if the checksum is correct, BLT_FALSE otherwise.
  */
-sRec_ProcessStatus SrecVerifyChecksum(const char *line)
+sRec_ProcessStatus SHARED_API_SECTION SrecVerifyChecksum(const char *line)
 {
   uint16_t bytes_on_line;
   uint8_t  checksum = 0;

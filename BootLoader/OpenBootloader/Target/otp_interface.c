@@ -31,7 +31,7 @@
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
-static void OPENBL_OTP_ProgramDoubleWord(uint32_t Address, uint64_t Data);
+//static void OPENBL_OTP_ProgramDoubleWord(uint32_t Address, uint64_t Data);
 
 /* Exported variables --------------------------------------------------------*/
 OPENBL_MemoryTypeDef OTP_Descriptor =
@@ -70,7 +70,6 @@ uint8_t OPENBL_OTP_Read(uint32_t Address)
   */
 void OPENBL_OTP_Write(uint32_t Address, uint8_t *Data, uint32_t DataLength)
 {
-  uint32_t index  = 0U;
   uint32_t length = DataLength;
 
   if (length & 7U)
@@ -85,7 +84,7 @@ void OPENBL_OTP_Write(uint32_t Address, uint8_t *Data, uint32_t DataLength)
   /* Clear all FLASH errors flags before starting write operation */
   __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_ALL_ERRORS);
 
-  for (index = 0U; index < length; (index += 8U))
+  for (uint32_t index = 0U; index < length; (index += 8U))
   {
     OPENBL_OTP_ProgramDoubleWord((Address + index), (uint64_t)(*((uint64_t *)((uint32_t)Data + index))));
   }
@@ -103,11 +102,11 @@ void OPENBL_OTP_Write(uint32_t Address, uint8_t *Data, uint32_t DataLength)
   * @param  Data specifies the data to be programmed.
   * @retval None.
   */
+#if 0
 static void OPENBL_OTP_ProgramDoubleWord(uint32_t Address, uint64_t Data)
 {
-#if 0
   HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, Address, Data);
-#endif
 }
+#endif
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

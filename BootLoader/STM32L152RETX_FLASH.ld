@@ -68,19 +68,19 @@ SECTIONS
 
   .API_SHARED 0x800A000 :
   {
-  	KEEP(*(.API_SHARED))
-	  KEEP(*(.text.add))
+    KEEP(*(.API_SHARED))
+    KEEP(*(.text.add))
   } > SHARED_MEM
   
   .apishared_section :
   {
-	  . = ALIGN(4);
-	  __sharedsection_start__ = .;
-	  *(.apishared_section*)
-	  __sharedsection_end__ = .;
-	} > SHARED_MEM
-	/*check if MY_MEMORY usage exceeds MY_MEMORY size */
-	ASSERT(LENGTH(SHARED_MEM) >= (__sharedsection_end__ - __sharedsection_start__), "SHARED_MEM memory overflowed !")
+    . = ALIGN(4);
+    __sharedsection_start__ = .;
+    *(.apishared_section*)
+    __sharedsection_end__ = .;
+  } > SHARED_MEM
+  /*check if MY_MEMORY usage exceeds MY_MEMORY size */
+  ASSERT(LENGTH(SHARED_MEM) >= (__sharedsection_end__ - __sharedsection_start__), "SHARED_MEM memory overflowed !")
 
  .shared_ram (NOLOAD):
   {

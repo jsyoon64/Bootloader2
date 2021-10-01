@@ -54,12 +54,23 @@ w25xxx_t w25xxx;
 #if (_W25xxx_USE_FREERTOS == 1)
 #define W25xxx_Delay(delay) osDelay(delay)
 #else
-#define W25xxx_Delay(delay) HAL_Delay(delay)
+//#define W25xxx_Delay(delay) HAL_Delay(delay)
+#define W25xxx_Delay(delay) Loop_Delay(delay)
 #endif
 
 /* Exported variables --------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
+void Loop_Delay(int delay)
+{
+	int j, k;
+	for (j = 0; j < delay; j++)
+	{
+		for (k = 0; k < 100; k++)
+			;
+	}
+}
+
 /**
   * @brief  Read/Write 1 byte 
   * @param  uint8_t
