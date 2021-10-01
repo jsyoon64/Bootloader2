@@ -75,7 +75,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="LittleFS/App/app_littlefs.c|LittleFS/Core/lfs.c|LittleFS/Core/lfs_util.c|LittleFS/Target" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Common"/>
+						<entry excluding="SharedMem/shared_mem.c|LittleFS/App/app_littlefs.c|LittleFS/Core/lfs.c|LittleFS/Core/lfs_util.c|LittleFS/Target" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Common"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Core"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
 					</sourceEntries>
