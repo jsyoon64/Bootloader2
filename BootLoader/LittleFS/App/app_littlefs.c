@@ -21,10 +21,10 @@ static int block_device_sync(const struct lfs_config *c);
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-uint8_t lfs_read_buf[256];
-uint8_t lfs_prog_buf[256];
-uint8_t lfs_lookahead_buf[16];	// 128/8=16
-uint8_t lfs_file_buf[256];
+uint8_t SHARED_BOOT_RAM lfs_read_buf[256];
+uint8_t SHARED_BOOT_RAM lfs_prog_buf[256];
+uint8_t SHARED_BOOT_RAM lfs_lookahead_buf[16];	// 128/8=16
+uint8_t SHARED_BOOT_RAM lfs_file_buf[256];
 
 // variables used by the file system
 lfs_t lfs;
