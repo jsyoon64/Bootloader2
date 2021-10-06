@@ -152,6 +152,7 @@ static void OPENBL_FS_WriteMemory(void)
 static void OPENBL_FS_Go(void)
 {
   uint32_t address = OPEN_BL_FS_JUMP_APP_ADDR;
+  #if 0
   uint32_t mem_area;
 
   /* Check memory protection then send adequate response */
@@ -176,6 +177,11 @@ static void OPENBL_FS_Go(void)
       OPENBL_MEM_JumpToAddress(address);
     }
   }
+  #else
+  /* If the jump address is valid then send ACK */
+  OPENBL_FS_SendByte(ACK_BYTE);
+  OPENBL_MEM_JumpToAddress(address);  
+  #endif
 }
 
 /**

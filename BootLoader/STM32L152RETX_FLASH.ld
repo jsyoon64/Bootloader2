@@ -80,7 +80,7 @@ SECTIONS
     __sharedsection_end__ = .;
   } > SHARED_MEM
   /*check if MY_MEMORY usage exceeds MY_MEMORY size */
-  ASSERT(LENGTH(SHARED_MEM) >= (__sharedsection_end__ - __sharedsection_start__), "SHARED_MEM memory overflowed !")
+  ASSERT(LENGTH(SHARED_MEM) >= (__sharedsection_end__ - __sharedsection_start__), "SHARED_MEM overflow !")
 
  .shared_ram (NOLOAD):
   {
@@ -90,7 +90,7 @@ SECTIONS
     __shared_ram_end__ = .;
   } > SHARED_RAM
   /*check if SHARED_RAM usage exceeds SHARED_RAM size */
-  ASSERT(LENGTH(SHARED_RAM) >= (__shared_ram_end__ - __shared_ram_start__), "SHARED_RAM overflowed !")
+  ASSERT(LENGTH(SHARED_RAM) >= (__shared_ram_end__ - __shared_ram_start__), "SHARED_RAM overflow !")
 
   /* The program code and other data into "FLASH" Rom type memory */
   .text :
