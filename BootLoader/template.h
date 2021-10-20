@@ -7,14 +7,14 @@
   * @date    2021/09/28  
   * @brief   
   ******************************************************************************
+    @attention
+            (c) Copyright, All Rights Reserved
+            
+    @Modification Tracking
+    Author          Date            Number          Description of Changes
+    --------        --------        -------         ------------------------
 
-Revision History:
-
-Modification Tracking
-Author          Date            Number          Description of Changes
---------        --------        -------         ------------------------
-
-------------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /* Includes ------------------------------------------------------------------*/
 /* Standard includes. */
