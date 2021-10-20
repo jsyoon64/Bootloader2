@@ -114,17 +114,13 @@ int main(void)
   printf("Application running...\r\n");
 
   /* Alarm every minute @ XX:XX:10 */
+  sAlarm.AlarmMask = RTC_ALARMMASK_DATEWEEKDAY|RTC_ALARMMASK_HOURS|RTC_ALARMMASK_MINUTES;
+  sAlarm.Alarm = RTC_ALARM_A;
 #if 0
   sAlarm.AlarmTime.Seconds = 10;
-  sAlarm.AlarmMask = RTC_ALARMMASK_DATEWEEKDAY|RTC_ALARMMASK_HOURS|RTC_ALARMMASK_MINUTES;
-  //sAlarm.AlarmMask = RTC_ALARMMASK_SECONDS;
-  sAlarm.Alarm = RTC_ALARM_A;
   HAL_RTC_SetAlarm_IT(&hrtc, &sAlarm, RTC_FORMAT_BIN);
 #else
   sAlarm.AlarmTime.Seconds = RTC_ByteToBcd2(10);
-  sAlarm.AlarmMask = RTC_ALARMMASK_DATEWEEKDAY|RTC_ALARMMASK_HOURS|RTC_ALARMMASK_MINUTES;
-  //sAlarm.AlarmMask = RTC_ALARMMASK_SECONDS;
-  sAlarm.Alarm = RTC_ALARM_A;
   HAL_RTC_SetAlarm_IT(&hrtc, &sAlarm, RTC_FORMAT_BCD);
 #endif
 
