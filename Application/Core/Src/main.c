@@ -69,12 +69,37 @@ RTC_TimeTypeDef sTime;
 RTC_DateTypeDef sDate;
 RTC_AlarmTypeDef sAlarm;
 
-void HAL_RTC_AlarmAEventCallback(RTC_HandleTypeDef *hrtc)
+void HAL_RTC_AlarmAEventCallback(RTC_HandleTypeDef *hrtcxx)
 {
-  HAL_RTC_GetTime(hrtc, &sTime, RTC_FORMAT_BIN);
-  HAL_RTC_GetDate(hrtc, &sDate, RTC_FORMAT_BIN);
+  HAL_RTC_GetTime(hrtcxx, &sTime, RTC_FORMAT_BIN);
+  HAL_RTC_GetDate(hrtcxx, &sDate, RTC_FORMAT_BIN);
   //HAL_RTCEx_GetTimeStamp(hrtc, &sTime, &sDate, RTC_FORMAT_BCD);
   printf("%d/%d/%d:%d %d %d\r\n", sDate.Year, sDate.Month, sDate.Date, sTime.Hours, sTime.Minutes, sTime.Seconds);
+}
+
+void check_rtc_status(void)
+{
+  hrtc.Instance = RTC;
+  hrtc.Init.HourFormat = RTC_HOURFORMAT_24;
+  hrtc.Init.AsynchPrediv = 127;
+  hrtc.Init.SynchPrediv = 255;
+  hrtc.Init.OutPut = RTC_OUTPUT_DISABLE;
+  hrtc.Init.OutPutPolarity = RTC_OUTPUT_POLARITY_HIGH;
+  hrtc.Init.OutPutType = RTC_OUTPUT_TYPE_OPENDRAIN;
+  if (HAL_RTC_Init(&hrtc) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  printf("RTC State = %d\r\n",HAL_RTC_GetState(&hrtc));
+  HAL_RTC_GetTime(&hrtc, &sTime, RTC_FORMAT_BIN);
+  HAL_RTC_GetDate(&hrtc, &sDate, RTC_FORMAT_BIN);
+  if( (sDate.Date == 0) || (sDate.Month == 0) || (sDate.Year == 0) ||
+      (sDate.Date > 31) || (sDate.Month > 12) || (sDate.Year < 20) )
+  {
+	  MX_RTC_Init();
+	  printf("RTC Initialized.\r\n");
+  }
 }
 
 /* USER CODE END 0 */
@@ -108,10 +133,12 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USART2_UART_Init();
-  MX_RTC_Init();
+  //MX_RTC_Init();
   /* USER CODE BEGIN 2 */
   unsigned int count;
   printf("Application running...\r\n");
+
+  check_rtc_status();
 
   /* Alarm every minute @ XX:XX:10 */
   sAlarm.AlarmMask = RTC_ALARMMASK_DATEWEEKDAY|RTC_ALARMMASK_HOURS|RTC_ALARMMASK_MINUTES;
